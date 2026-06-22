@@ -410,12 +410,12 @@
   /* AJUSTES ALINE HERO + CARROSSEL */
   .header {
     max-width:none;
-    min-height:100svh;
+    min-height:auto;
     display:flex;
-    align-items:center;
-    justify-content:center;
+    align-items:flex-start;
+    justify-content:flex-start;
     overflow:hidden;
-    padding:38px 20px 28px;
+    padding:42px 20px 26px;
     isolation:isolate;
   }
   .header:before {
@@ -427,9 +427,9 @@
     width:100%;
     height:100%;
     object-fit:cover;
-    object-position:center top;
-    opacity:.26;
-    filter:saturate(.88) contrast(1.08) brightness(.62);
+    object-position:center 18%;
+    opacity:.44;
+    filter:saturate(.98) contrast(1.03) brightness(.82);
     z-index:-3;
   }
   .header:after {
@@ -437,8 +437,8 @@
     position:absolute;
     inset:0;
     background:
-      linear-gradient(180deg, rgba(3,7,9,.40), rgba(3,7,9,.72) 44%, #070807 100%),
-      radial-gradient(circle at 50% 24%, rgba(42,171,238,.22), transparent 42%);
+      linear-gradient(180deg, rgba(3,7,9,.18), rgba(3,7,9,.50) 46%, rgba(7,8,7,.88) 100%),
+      radial-gradient(circle at 50% 24%, rgba(42,171,238,.16), transparent 42%);
     z-index:-2;
   }
   .hero-content {
@@ -528,7 +528,9 @@
     font-size:30px;
     font-family:Arial, sans-serif;
     line-height:1;
-    pointer-events:none;
+    pointer-events:auto;
+    cursor:pointer;
+    user-select:none;
     animation:swipePulse 1.15s ease-in-out infinite;
   }
   .swipe-arrow-left {
@@ -544,7 +546,7 @@
   }
   @media (min-width:560px) {
     .header {
-      min-height:760px;
+      min-height:auto;
     }
     .hero-points {
       grid-template-columns:repeat(3,1fr);
@@ -570,10 +572,6 @@
 
     <p class="sub hero-main-copy">
       Aprenda com quem opera de forma consciente nesse mercado e busca <strong>velas rosas todo santo dia ao vivo.</strong>
-    </p>
-
-    <p class="hero-note">
-      Diferente de muitos que entram em qualquer uma, sem análise, eu faço poucas entradas e busco sair rápido do gráfico com meu lucro no bolso.
     </p>
 
     <p class="hero-note hero-note-strong">
@@ -666,7 +664,17 @@
   var track = document.getElementById('depTrack');
   var dots = document.querySelectorAll('#depDots .dot');
   if(!track) return;
+  var prevArrow = document.querySelector('.swipe-arrow-left');
+  var nextArrow = document.querySelector('.swipe-arrow-right');
   var isDown=false, startX, scrollLeft;
+
+  function scrollByCard(direction){
+    var card = track.querySelector('.dep-card');
+    var amount = card ? card.getBoundingClientRect().width + 12 : 292;
+    track.scrollTo({left:track.scrollLeft + (direction * amount),behavior:'smooth'});
+  }
+  if(prevArrow) prevArrow.addEventListener('click',function(){ scrollByCard(-1); });
+  if(nextArrow) nextArrow.addEventListener('click',function(){ scrollByCard(1); });
 
   track.addEventListener('mousedown',function(e){isDown=true;startX=e.pageX-track.offsetLeft;scrollLeft=track.scrollLeft;track.style.cursor='grabbing';});
   track.addEventListener('mouseleave',function(){isDown=false;track.style.cursor='grab';});
